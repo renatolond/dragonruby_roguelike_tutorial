@@ -19,5 +19,32 @@ module Entities
       @x = map_x - args.state.map.x
       @y = map_y - args.state.map.y
     end
+
+    class << self
+      # @param state [GTK::OpenEntity]
+      # @param idx_x [Integer] The index of the player in the x-axis
+      # @param idx_y [Integer] The index of the player in the y-axis
+      def spawn_near(state, idx_x, idx_y)
+        radius = 1
+        attempt = 0
+
+        tile = state.map.tiles[idx_x][idx_y]
+
+        while tile.nil? || tile.blocking?
+          idx_x = ((idx_x - radius)..(idx_x + radius)).to_a.sample # TODO: optimize this to avoid generating an array at every spawn
+          idx_y = ((idx_y - radius)..(idx_y + radius)).to_a.sample # TODO: optimize this to avoid generating an array at every spawn
+
+          tile = state.map.tiles.dig(idx_x, idx_y)
+
+          attempt += 1
+          next unless attempt >= radius * 8
+
+          radius += 1
+          attempt = 0
+        end
+
+        new(map_x: idx_x * SPRITE_WIDTH, map_y: idx_y * SPRITE_HEIGHT)
+      end
+    end
   end
 end

@@ -6,6 +6,7 @@ module Scenes
       # (see Game#tick)
       def tick(args)
         args.state.player.tick(args)
+        Controllers::EnemyController.tick(args)
       end
 
       # @param state [GTK::OpenEntity]
@@ -13,6 +14,7 @@ module Scenes
       # @param _labels [Array]
       def render(state, sprites, _labels)
         sprites << state.map.tiles
+        sprites << state.enemies
         sprites << state.player
       end
 
@@ -22,7 +24,8 @@ module Scenes
       # @return [void]
       def reset(state)
         Controllers::MapController.load_map(state)
-        state.player = ::Entities::Player.spawn(2, 2)
+        Controllers::EnemyController.spawn_enemies(state)
+        state.player = ::Entities::Player.spawn_near(state, 2, 2)
       end
     end
   end
