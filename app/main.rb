@@ -9,6 +9,8 @@ require_relative "entities/base"
 require_relative "entities/static"
 require_relative "entities/floor"
 require_relative "entities/wall"
+require_relative "entities/mobile"
+require_relative "entities/player"
 
 # This class contains the logic around the game.
 # It will call the scenes as needed to render the current frame
