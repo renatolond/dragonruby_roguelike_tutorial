@@ -1,87 +1,57 @@
 # frozen_string_literal: true
 
+require_relative "scenes/main"
+require_relative "scenes/title"
+
+# This class contains the logic around the game.
+# It will call the scenes as needed to render the current frame
+class Game
+  attr_reader :active_scene
+
+  def initialize
+    goto_title
+  end
+
+  # @param args [GTK::Args]
+  # @return [void]
+  def tick(args)
+    sprites = []
+    labels = []
+    active_scene.tick(args)
+    active_scene.render(args.state, sprites, labels)
+    render(args, sprites, labels)
+  end
+
+  # @param args (see #tick)
+  # @param sprites [Array]
+  # @param labels [Array]
+  def render(args, sprites, labels)
+    args.outputs.sprites << sprites
+    args.outputs.labels << labels
+  end
+
+  # Changes the scene to the title scene
+  # @return [void]
+  def goto_title
+    @active_scene = Scenes::Title
+  end
+
+  # Changes the scene to the main (game) scene
+  # @param args (see #tick)
+  # @return [void]
+  def goto_game(args)
+    Scenes::Main.reset(args.state)
+    @active_scene = Scenes::Main
+  end
+end
+
+$game ||= Game.new # rubocop:disable Style/GlobalVars
+
+# The main method called by DragonRuby.
+# It is used in the game loop to render the game
+#
+# @param args [GTK::Args]
+# @return [void]
 def tick(args)
-  args.state.logo_rect ||= { x: 576,
-                             y: 200,
-                             w: 128,
-                             h: 120 }
-
-  args.outputs.labels  << { x: 640,
-                            y: 600,
-                            text: "Hello World!",
-                            size_px: 30,
-                            anchor_x: 0.5,
-                            anchor_y: 0.5 }
-
-  args.outputs.labels  << { x: 640,
-                            y: 510,
-                            text: "Documentation is located under the ./docs directory. 150+ samples are located under the ./samples directory.",
-                            size_px: 20,
-                            anchor_x: 0.5,
-                            anchor_y: 0.5 }
-
-  args.outputs.labels  << { x: 640,
-                            y: 480,
-                            text: "You can also access these docs online at docs.dragonruby.org.",
-                            size_px: 20,
-                            anchor_x: 0.5,
-                            anchor_y: 0.5 }
-
-  args.outputs.labels  << { x: 640,
-                            y: 400,
-                            text: "The code that powers what you're seeing right now is located at ./mygame/app/main.rb.",
-                            size_px: 20,
-                            anchor_x: 0.5,
-                            anchor_y: 0.5 }
-
-  args.outputs.labels  << { x: 640,
-                            y: 380,
-                            text: "(you can change the code while the app is running and see the updates live)",
-                            size_px: 20,
-                            anchor_x: 0.5,
-                            anchor_y: 0.5 }
-
-  args.outputs.sprites << { x: args.state.logo_rect.x,
-                            y: args.state.logo_rect.y,
-                            w: args.state.logo_rect.w,
-                            h: args.state.logo_rect.h,
-                            path: "dragonruby.png",
-                            angle: Kernel.tick_count }
-
-  args.outputs.labels  << { x: 640,
-                            y: 180,
-                            text: "(use arrow keys to move the logo around)",
-                            size_px: 20,
-                            anchor_x: 0.5,
-                            anchor_y: 0.5 }
-
-  args.outputs.labels  << { x: 640,
-                            y: 80,
-                            text: "Join the Discord Server! https://discord.dragonruby.org",
-                            size_px: 30,
-                            anchor_x: 0.5 }
-
-  if args.inputs.keyboard.left
-    args.state.logo_rect.x -= 10
-  elsif args.inputs.keyboard.right
-    args.state.logo_rect.x += 10
-  end
-
-  if args.inputs.keyboard.down
-    args.state.logo_rect.y -= 10
-  elsif args.inputs.keyboard.up
-    args.state.logo_rect.y += 10
-  end
-
-  if args.state.logo_rect.x > 1280
-    args.state.logo_rect.x = 0
-  elsif args.state.logo_rect.x.negative?
-    args.state.logo_rect.x = 1280
-  end
-
-  if args.state.logo_rect.y > 720
-    args.state.logo_rect.y = 0
-  elsif args.state.logo_rect.y.negative?
-    args.state.logo_rect.y = 720
-  end
+  $game.tick(args) # rubocop:disable Style/GlobalVars
 end
