@@ -3,6 +3,13 @@
 require_relative "scenes/main"
 require_relative "scenes/title"
 
+require_relative "controllers/map_controller"
+
+require_relative "entities/base"
+require_relative "entities/static"
+require_relative "entities/floor"
+require_relative "entities/wall"
+
 # This class contains the logic around the game.
 # It will call the scenes as needed to render the current frame
 class Game
