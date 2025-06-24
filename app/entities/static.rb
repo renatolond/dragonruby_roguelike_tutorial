@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 module Entities
+  # The base class for any static entities (floors, walls, etc)
   class Static < Base
     # (see Game#tick)
     def tick(args)

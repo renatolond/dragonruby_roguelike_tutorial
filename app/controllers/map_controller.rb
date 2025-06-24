@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Controllers
+  # Module response for movement and logic around the map
   module MapController
     MAP_WIDTH = 80
     MAP_HEIGHT = 45
@@ -45,14 +46,24 @@ module Controllers
         map.tiles.each { |arr| arr.each { |t| t.tick(args) } }
       end
 
+      # Transforms a map x (virtual position) into a tile x (screen position)
+      # @param map_x [Integer]
+      # @return [Integer]
       def map_x_to_idx_x(map_x)
         (map_x / TILE_WIDTH).floor
       end
 
+      # Transforms a map y (virtual position) into a tile y (screen position)
+      # @param map_y [Integer]
+      # @return [Integer]
       def map_y_to_idx_y(map_y)
         (map_y / TILE_HEIGHT).floor
       end
 
+      # @param idx_x (see .tile_for)
+      # @param idx_y (see .tile_for)
+      # @param args (see .tick)
+      # @return [Boolean]
       def blocked?(args, idx_x, idx_y)
         return true if idx_x.negative? || idx_x > MAP_WIDTH - 1
         return true if idx_y.negative? || idx_y > MAP_HEIGHT - 1

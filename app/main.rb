@@ -28,6 +28,8 @@ class Game
     labels = []
     active_scene.tick(args)
     active_scene.render(args.state, sprites, labels)
+    args.gtk.warn_array_primitives!
+    args.outputs.primitives << args.gtk.framerate_diagnostics_primitives
     render(args, sprites, labels)
   end
 

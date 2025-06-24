@@ -8,8 +8,10 @@ module Scenes
         args.state.player.tick(args)
       end
 
-      # Renders anything related to the scene
-      def render(state, sprites, labels)
+      # @param state [GTK::OpenEntity]
+      # @param sprites [Array]
+      # @param _labels [Array]
+      def render(state, sprites, _labels)
         sprites << state.map.tiles
         sprites << state.player
       end
