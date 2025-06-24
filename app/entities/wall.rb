@@ -2,8 +2,13 @@
 
 module Entities
   class Wall < Static
-    def initialize(x: 0, y: 0, w: SPRITE_WIDTH, h: SPRITE_HEIGHT) # rubocop:disable Naming/MethodParameterName
-      super(x: x, y: y, w: w, h: h, path: "sprites/wall.png")
+    def initialize(map_x: 0, map_y: 0, w: SPRITE_WIDTH, h: SPRITE_HEIGHT) # rubocop:disable Naming/MethodParameterName
+      super(map_x: map_x, map_y: map_y, w: w, h: h, path: "sprites/wall.png")
+    end
+
+    # @return [Boolean]
+    def blocking?
+      true
     end
   end
 end

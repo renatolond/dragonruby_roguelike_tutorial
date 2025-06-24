@@ -6,11 +6,59 @@ module Controllers
     MAP_HEIGHT = 45
     TILE_WIDTH = 32
     TILE_HEIGHT = 32
+    MIN_X = 0
+    MIN_Y = 0
+    SCREEN_WIDTH = 1280
+    SCREEN_HEIGHT = 720
+    MAX_X = (MAP_WIDTH * TILE_WIDTH) - SCREEN_WIDTH
+    MAX_Y = (MAP_HEIGHT * TILE_HEIGHT) - SCREEN_HEIGHT
+
+    MOVEMENT_ZONE_BUFFER_X = 8 * TILE_WIDTH
+    MOVEMENT_ZONE_BUFFER_Y = 6 * TILE_HEIGHT
+
     class << self
       # Loads the map into the state
       # @param state [GTK::OpenEntity]
       def load_map(state)
         state.map.tiles = map_tiles
+        state.map.x = 0
+        state.map.y = 0
+      end
+
+      # (see Game#tick)
+      def tick(args)
+        player = args.state.player
+        map = args.state.map
+        player_x_offset = player.map_x - map.x
+        player_y_offset = player.map_y - map.y
+        if player_x_offset < MOVEMENT_ZONE_BUFFER_X
+          map.x = [MIN_X, map.x - TILE_WIDTH].max
+        elsif player_x_offset > (SCREEN_WIDTH - MOVEMENT_ZONE_BUFFER_X)
+          map.x = [map.x + TILE_WIDTH, MAX_X].min
+        end
+        if player_y_offset < MOVEMENT_ZONE_BUFFER_Y
+          map.y = [MIN_Y, map.y - TILE_HEIGHT].max
+        elsif player_y_offset > (SCREEN_HEIGHT - MOVEMENT_ZONE_BUFFER_Y)
+          map.y = [map.y + TILE_HEIGHT, MAX_Y].min
+        end
+
+        map.tiles.each { |arr| arr.each { |t| t.tick(args) } }
+      end
+
+      def map_x_to_idx_x(map_x)
+        (map_x / TILE_WIDTH).floor
+      end
+
+      def map_y_to_idx_y(map_y)
+        (map_y / TILE_HEIGHT).floor
+      end
+
+      def blocked?(args, idx_x, idx_y)
+        return true if idx_x.negative? || idx_x > MAP_WIDTH - 1
+        return true if idx_y.negative? || idx_y > MAP_HEIGHT - 1
+
+        tile = args.state.map.tiles[idx_x][idx_y]
+        tile.blocking?
       end
 
       private
@@ -20,7 +68,8 @@ module Controllers
           map_tiles = Array.new(MAP_WIDTH) { Array.new(MAP_HEIGHT) }
           MAP_WIDTH.times do |idx_x|
             MAP_HEIGHT.times do |idx_y|
-              map_tiles[idx_x][idx_y] = if idx_y.zero? || idx_y == (MAP_HEIGHT - 1) || idx_x.zero? || idx_x == (MAP_WIDTH - 1)
+              map_tiles[idx_x][idx_y] = if (idx_y.zero? || idx_y == (MAP_HEIGHT - 1) || idx_x.zero? || idx_x == (MAP_WIDTH - 1)) ||
+                                           rand(8).zero?
                 tile_for(idx_x, idx_y, ::Entities::Wall)
               else
                 tile_for(idx_x, idx_y, ::Entities::Floor)
@@ -35,7 +84,7 @@ module Controllers
         # @param tile_type [Class] A subclass of Entities::Base
         # @return [Entities::Base]
         def tile_for(idx_x, idx_y, tile_type)
-          tile_type.new(x: idx_x * TILE_WIDTH, y: idx_y * TILE_HEIGHT, w: TILE_WIDTH, h: TILE_HEIGHT)
+          tile_type.new(map_x: idx_x * TILE_WIDTH, map_y: idx_y * TILE_HEIGHT, w: TILE_WIDTH, h: TILE_HEIGHT)
         end
     end
   end
