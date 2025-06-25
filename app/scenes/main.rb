@@ -2,7 +2,10 @@
 
 module Scenes
   module Main
-    TEXT_AREA_WIDTH = 1280 - Controllers::MapController::PLAY_AREA_WIDTH
+    PLAY_AREA_WIDTH = 832
+    PLAY_AREA_HEIGHT = 720
+
+    TEXT_AREA_WIDTH = 1280 - PLAY_AREA_WIDTH
     TEXT_AREA_HEIGHT = 720
 
     class << self
@@ -22,26 +25,26 @@ module Scenes
         sprites << {
           x: 0,
           y: 0,
-          w: Controllers::MapController::PLAY_AREA_WIDTH,
-          h: Controllers::MapController::PLAY_AREA_HEIGHT,
+          w: PLAY_AREA_WIDTH,
+          h: PLAY_AREA_HEIGHT,
           source_x: 0,
           source_y: 0,
-          source_w: Controllers::MapController::PLAY_AREA_WIDTH,
-          source_h: Controllers::MapController::PLAY_AREA_HEIGHT,
+          source_w: PLAY_AREA_WIDTH,
+          source_h: PLAY_AREA_HEIGHT,
           path: :play_area
         }
         sprites << {
           x: 0,
           y: 0,
-          w: Controllers::MapController::PLAY_AREA_WIDTH,
-          h: Controllers::MapController::PLAY_AREA_HEIGHT,
+          w: PLAY_AREA_WIDTH,
+          h: PLAY_AREA_HEIGHT,
           source_x: 0,
           source_y: 0,
-          source_w: Controllers::MapController::PLAY_AREA_WIDTH,
-          source_h: Controllers::MapController::PLAY_AREA_HEIGHT,
+          source_w: PLAY_AREA_WIDTH,
+          source_h: PLAY_AREA_HEIGHT,
           path: :entities
         }
-        sprites << { x: Controllers::MapController::PLAY_AREA_WIDTH, y: 0, w: TEXT_AREA_WIDTH, h: TEXT_AREA_HEIGHT, source_x: 0, source_y: 0, source_w: TEXT_AREA_WIDTH, source_h: TEXT_AREA_HEIGHT, path: :text_area }
+        sprites << { x: PLAY_AREA_WIDTH, y: 0, w: TEXT_AREA_WIDTH, h: TEXT_AREA_HEIGHT, source_x: 0, source_y: 0, source_w: TEXT_AREA_WIDTH, source_h: TEXT_AREA_HEIGHT, path: :text_area }
       end
 
       # Resets the scene back to its original state by modifying the state

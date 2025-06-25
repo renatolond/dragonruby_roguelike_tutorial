@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "controllers/enemy_controller"
-require_relative "controllers/map_controller"
-
 require_relative "scenes/main"
 require_relative "scenes/title"
+
+require_relative "controllers/enemy_controller"
+require_relative "controllers/map_controller"
 
 require_relative "behaviour/occupant"
 
