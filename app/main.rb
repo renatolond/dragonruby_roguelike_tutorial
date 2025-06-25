@@ -6,6 +6,8 @@ require_relative "scenes/title"
 require_relative "controllers/enemy_controller"
 require_relative "controllers/map_controller"
 
+require_relative "behaviour/occupant"
+
 require_relative "entities/base"
 require_relative "entities/static"
 require_relative "entities/floor"

@@ -23,5 +23,27 @@ module Entities
     def blocking?
       false
     end
+
+    # Simplified linear distance to other entity. Will raise if +other+ is not an entity
+    # @param other [Entities::Base]
+    # @raise [ArgumentError] if other is something other than an Entity
+    # @return [Integer]
+    def manhattan_distance(other)
+      raise ArgumentError unless other.is_a?(Entities::Base)
+
+      x_diff = other.map_x - map_x
+      y_diff = other.map_y - map_y
+      x_diff.abs + y_diff.abs
+    end
+
+    # (see Controllers::MapController.map_x_to_idx_x)
+    def map_tile_x
+      Controllers::MapController.map_x_to_idx_x(map_x)
+    end
+
+    # (see Controllers::MapController.map_y_to_idx_y)
+    def map_tile_y
+      Controllers::MapController.map_y_to_idx_y(map_y)
+    end
   end
 end

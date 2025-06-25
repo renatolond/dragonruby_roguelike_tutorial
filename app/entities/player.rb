@@ -27,6 +27,7 @@ module Entities
       attempt_move(args, target_x, target_y) do
         self.took_action = true
         ::Controllers::MapController.tick(args)
+        update_tile(args)
       end
     end
 

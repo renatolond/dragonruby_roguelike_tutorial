@@ -2,6 +2,8 @@
 
 module Entities
   class Mobile < Base
+    include Behaviour::Occupant
+
     # @param args (see Game#tick)
     # @param target_x [Integer] The intended destination x-coordinate
     # @param target_y [Integer] The intended destination y-coordinate
@@ -18,6 +20,11 @@ module Entities
       yield if block_given?
       @x = map_x - args.state.map.x
       @y = map_y - args.state.map.y
+    end
+
+    # @return [Boolean]
+    def blocking?
+      true
     end
 
     class << self

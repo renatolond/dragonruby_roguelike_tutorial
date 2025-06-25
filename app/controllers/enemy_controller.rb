@@ -7,7 +7,7 @@ module Controllers
       def tick(args)
         return unless args.state.player.took_action
 
-        args.state.enemies.each { |enemy| enemy.patrol(args) }
+        args.state.enemies.each { |enemy| enemy.tick(args) }
       end
 
       # Spawn the enemies to set the initial state
