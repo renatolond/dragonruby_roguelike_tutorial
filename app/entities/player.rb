@@ -26,6 +26,8 @@ module Entities
       end
       attempt_move(args, target_x, target_y) do
         self.took_action = true
+        args.state.redraw_entities = true
+        args.state.redraw_play_area = true
         ::Controllers::MapController.tick(args)
         update_tile(args)
       end

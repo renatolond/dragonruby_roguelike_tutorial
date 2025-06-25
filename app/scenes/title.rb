@@ -8,10 +8,10 @@ module Scenes
         $game.goto_game(args) if args.inputs.keyboard.space # rubocop:disable Style/GlobalVars
       end
 
-      # @param _state [GTK::OpenEntity]
+      # @param _args [GTK::Args]
       # @param sprites [Array]
       # @param labels [Array]
-      def render(_state, sprites, labels)
+      def render(_args, sprites, labels)
         labels << { x: 550, y: 300, text: "My RogueLike Tutorial" }
         labels << { x: 550, y: 110, text: "Press space to start" }
 

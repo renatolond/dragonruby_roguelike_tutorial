@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "scenes/main"
-require_relative "scenes/title"
-
 require_relative "controllers/enemy_controller"
 require_relative "controllers/map_controller"
+
+require_relative "scenes/main"
+require_relative "scenes/title"
 
 require_relative "behaviour/occupant"
 
@@ -32,7 +32,7 @@ class Game
     sprites = []
     labels = []
     active_scene.tick(args)
-    active_scene.render(args.state, sprites, labels)
+    active_scene.render(args, sprites, labels)
     args.gtk.warn_array_primitives!
     args.outputs.primitives << args.gtk.framerate_diagnostics_primitives
     render(args, sprites, labels)

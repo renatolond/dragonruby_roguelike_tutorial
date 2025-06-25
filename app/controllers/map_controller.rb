@@ -9,10 +9,10 @@ module Controllers
     TILE_HEIGHT = 32
     MIN_X = 0
     MIN_Y = 0
-    SCREEN_WIDTH = 1280
-    SCREEN_HEIGHT = 720
-    MAX_X = (MAP_WIDTH * TILE_WIDTH) - SCREEN_WIDTH
-    MAX_Y = (MAP_HEIGHT * TILE_HEIGHT) - SCREEN_HEIGHT
+    PLAY_AREA_WIDTH = 832
+    PLAY_AREA_HEIGHT = 720
+    MAX_X = (MAP_WIDTH * TILE_WIDTH) - PLAY_AREA_WIDTH
+    MAX_Y = (MAP_HEIGHT * TILE_HEIGHT) - PLAY_AREA_HEIGHT
 
     MOVEMENT_ZONE_BUFFER_X = 8 * TILE_WIDTH
     MOVEMENT_ZONE_BUFFER_Y = 6 * TILE_HEIGHT
@@ -34,12 +34,12 @@ module Controllers
         player_y_offset = player.map_y - map.y
         if player_x_offset < MOVEMENT_ZONE_BUFFER_X
           map.x = [MIN_X, map.x - TILE_WIDTH].max
-        elsif player_x_offset > (SCREEN_WIDTH - MOVEMENT_ZONE_BUFFER_X)
+        elsif player_x_offset > (PLAY_AREA_WIDTH - MOVEMENT_ZONE_BUFFER_X)
           map.x = [map.x + TILE_WIDTH, MAX_X].min
         end
         if player_y_offset < MOVEMENT_ZONE_BUFFER_Y
           map.y = [MIN_Y, map.y - TILE_HEIGHT].max
-        elsif player_y_offset > (SCREEN_HEIGHT - MOVEMENT_ZONE_BUFFER_Y)
+        elsif player_y_offset > (PLAY_AREA_HEIGHT - MOVEMENT_ZONE_BUFFER_Y)
           map.y = [map.y + TILE_HEIGHT, MAX_Y].min
         end
 
