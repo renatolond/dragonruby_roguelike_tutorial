@@ -7,7 +7,8 @@ module Entities
 
     def initialize(map_x: 0, map_y: 0, w: SPRITE_WIDTH, h: SPRITE_HEIGHT, path: "app/sprites/null_sprite.png") # rubocop:disable Naming/MethodParameterName
       super(map_x: map_x, map_y: map_y, w: w, h: h, path: path) # Seems to be bugging if the params are not passed by name # rubocop:disable Style/SuperArguments
-      @hp = 10
+      @max_hp = 10
+      @hp = max_hp
       @defense = 0
       @attack = 1
       @crit_bonus = 1

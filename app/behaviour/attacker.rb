@@ -10,17 +10,14 @@ module Behaviour
       return unless other.enabled_hit_points?
 
       roll = Dices::D20.roll
-      puts "Rolled #{roll} against #{other.class}'s DEF: #{other.defense}"
       total_attack = attack
-      if roll == 20
-        puts "CRIT!"
-        total_attack += crit_bonus
-      end
+      total_attack += crit_bonus if roll == 20
 
       if roll >= other.defense
+        Controllers::EventLogController.log_event("#{"CRIT! " if roll == 20}#{self.class.name} hit #{other.class.name} for #{total_attack} damage")
         other.take_damage(total_attack)
       else
-        puts "Miss!"
+        Controllers::EventLogController.log_event("#{self.class.name} missed #{other.class.name}!")
       end
     end
 

@@ -2,6 +2,11 @@
 
 module Entities
   class Zombie < Enemy
+    # @return [String]
+    def self.name
+      "Zombie"
+    end
+
     private
 
       def initialize(map_x: 0, map_y: 0, w: SPRITE_WIDTH, h: SPRITE_HEIGHT) # rubocop:disable Naming/MethodParameterName

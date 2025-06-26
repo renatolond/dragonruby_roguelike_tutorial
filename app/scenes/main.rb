@@ -11,8 +11,10 @@ module Scenes
     class << self
       # (see Game#tick)
       def tick(args)
+        Controllers::EventLogController.tick(args)
         args.state.player.tick(args)
         Controllers::EnemyController.tick(args)
+        args.state.redraw_text_area = true if args.state.player.took_damage || Controllers::EventLogController.logged_event_this_tick
       end
 
       # @param args (see Game#tick)
@@ -52,6 +54,7 @@ module Scenes
       # @param state [GTK::OpenEntity]
       # @return [void]
       def reset(state)
+        Controllers::EventLogController.reset(state)
         Controllers::MapController.load_map(state)
         Controllers::EnemyController.spawn_enemies(state)
         state.player = ::Entities::Player.spawn_near(state, 2, 2)
@@ -85,6 +88,8 @@ module Scenes
         def render_text_area(args)
           args.state.redraw_text_area = false
           args.render_target(:text_area).solids << { x: 0, y: 0, w: TEXT_AREA_WIDTH, h: TEXT_AREA_HEIGHT, r: 10, g: 21, b: 33 }
+          args.render_target(:text_area).labels << args.state.player.stats_labels
+          args.render_target(:text_area).labels << ::Controllers::EventLogController.events_as_labels
         end
     end
   end

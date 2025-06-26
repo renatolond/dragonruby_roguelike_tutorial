@@ -3,7 +3,7 @@
 module Behaviour
   # This behavior adds hit points, defense and related methods
   module HitPoints
-    attr_reader :hp, :defense
+    attr_reader :max_hp, :hp, :defense
 
     # @return [Boolean]
     def alive?
@@ -16,7 +16,9 @@ module Behaviour
     def take_damage(damage)
       @hp = hp - damage
       @hp = 0 if @hp.negative?
-      puts "#{self.class} took #{damage} damage. #{@hp} remaining!"
+      return unless @hp.zero?
+
+      Controllers::EventLogController.log_event("#{self.class.name} died!")
     end
 
     # Can be used to test if this object has the HitPoints behaviour
