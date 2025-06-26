@@ -3,6 +3,8 @@
 module Entities
   # The player is virtually a singleton and should only be initialized by calling +.spawn+
   class Player < Mobile
+    include Behaviour::HitPoints
+    include Behaviour::Attacker
     attr_accessor :took_action
 
     # (see Game#tick)
@@ -37,6 +39,9 @@ module Entities
 
       def initialize(map_x: 0, map_y: 0, w: SPRITE_WIDTH, h: SPRITE_HEIGHT) # rubocop:disable Naming/MethodParameterName
         super(map_x: map_x, map_y: map_y, w: w, h: h, path: "sprites/player.png")
+        @hp = 50
+        @defense = 10
+        @attack = 3
       end
   end
 end

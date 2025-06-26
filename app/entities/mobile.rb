@@ -2,7 +2,7 @@
 
 module Entities
   class Mobile < Base
-    include Behaviour::Occupant
+    include Behaviour::Occupier
 
     # @param args (see Game#tick)
     # @param target_x [Integer] The intended destination x-coordinate
@@ -12,12 +12,19 @@ module Entities
     def attempt_move(args, target_x, target_y)
       idx_x = Controllers::MapController.map_x_to_idx_x(target_x)
       idx_y = Controllers::MapController.map_y_to_idx_y(target_y)
-      return if Controllers::MapController.blocked?(args, idx_x, idx_y)
-      return if @map_x == target_x && map_y == target_y
+      return if @map_x == target_x && @map_y == target_y
 
-      @map_x = target_x
-      @map_y = target_y
-      yield if block_given?
+      if Controllers::MapController.blocked?(args, idx_x, idx_y)
+        other = Controllers::MapController.tile_occupant(args, idx_x, idx_y)
+        if enabled_attacker? && other
+          deal_damage(other)
+          yield if block_given?
+        end
+      else
+        @map_x = target_x
+        @map_y = target_y
+        yield if block_given?
+      end
       @x = map_x - args.state.map.x
       @y = map_y - args.state.map.y
     end

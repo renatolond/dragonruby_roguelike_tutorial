@@ -63,11 +63,32 @@ module Controllers
       # @param args (see .tick)
       # @return [Boolean]
       def blocked?(args, idx_x, idx_y)
-        return true if idx_x.negative? || idx_x > MAP_WIDTH - 1
-        return true if idx_y.negative? || idx_y > MAP_HEIGHT - 1
+        tile = tile_at(args, idx_x, idx_y)
+        return true unless tile
 
-        tile = args.state.map.tiles[idx_x][idx_y]
         tile.blocking?
+      end
+
+      # @param idx_x (see .tile_for)
+      # @param idx_y (see .tile_for)
+      # @param args (see .tick)
+      # @return [nil,Entities::Mobile]
+      def tile_occupant(args, idx_x, idx_y)
+        tile = tile_at(args, idx_x, idx_y)
+        return nil unless tile&.enabled_occupant?
+
+        tile.occupant
+      end
+
+      # @param idx_x (see .tile_for)
+      # @param idx_y (see .tile_for)
+      # @param args (see .tick)
+      # @return [nil,Entities::Static]
+      def tile_at(args, idx_x, idx_y)
+        return nil if idx_x.negative? || idx_x > MAP_WIDTH - 1
+        return nil if idx_y.negative? || idx_y > MAP_HEIGHT - 1
+
+        args.state.map.tiles[idx_x][idx_y]
       end
 
       private
