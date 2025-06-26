@@ -10,13 +10,30 @@ module Entities
       @hp = 10
       @defense = 0
       @attack = 1
+      @crit_bonus = 1
+    end
+
+    # @return [Symbol]
+    def faction
+      :enemy
     end
 
     # (see Game#tick)
     def tick(args)
+      unless alive?
+        free_tile_on_death(args)
+        return
+      end
+
       act(args)
       @x = map_x - args.state.map.x
       @y = map_y - args.state.map.y
+    end
+
+    # @param _args [GTK::Args]
+    # @return [void]
+    def free_tile_on_death(_args)
+      tile.occupant = nil
     end
 
     POSSIBLE_DIRECTIONS = %i[up down left right].freeze

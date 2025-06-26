@@ -24,6 +24,11 @@ module Entities
       false
     end
 
+    # @return [Symbol]
+    def faction
+      :neutral
+    end
+
     # Simplified linear distance to other entity. Will raise if +other+ is not an entity
     # @param other [Entities::Base]
     # @raise [ArgumentError] if other is something other than an Entity

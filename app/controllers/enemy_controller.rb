@@ -8,6 +8,7 @@ module Controllers
         return unless args.state.player.took_action
 
         args.state.enemies.each { |enemy| enemy.tick(args) }
+        args.state.enemies.select!(&:alive?)
       end
 
       # Spawn the enemies to set the initial state

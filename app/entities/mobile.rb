@@ -16,7 +16,10 @@ module Entities
 
       if Controllers::MapController.blocked?(args, idx_x, idx_y)
         other = Controllers::MapController.tile_occupant(args, idx_x, idx_y)
-        if enabled_attacker? && other
+        if enabled_attacker? &&
+           other &&
+           other.faction != :neutral &&
+           other.faction != faction
           deal_damage(other)
           yield if block_given?
         end

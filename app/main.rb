@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require_relative "dices/dice"
+require_relative "dices/d6"
+require_relative "dices/d20"
+
 require_relative "scenes/main"
 require_relative "scenes/title"
 

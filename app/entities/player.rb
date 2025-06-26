@@ -7,6 +7,11 @@ module Entities
     include Behaviour::Attacker
     attr_accessor :took_action
 
+    # @return [Symbol]
+    def faction
+      :player
+    end
+
     # (see Game#tick)
     def tick(args)
       self.took_action = false
@@ -42,6 +47,7 @@ module Entities
         @hp = 50
         @defense = 10
         @attack = 3
+        @crit_bonus = 1
       end
   end
 end
