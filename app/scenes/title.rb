@@ -5,7 +5,21 @@ module Scenes
     class << self
       # (see Game#tick)
       def tick(args)
+        args.state.timer ||= 0
+        args.state.timer += 1
+        return if args.state.timer < 30
+
         $game.goto_game(args) if args.inputs.keyboard.space # rubocop:disable Style/GlobalVars
+      end
+
+      # Resets the scene back to its original state by modifying the state
+      #
+      # @param state [GTK::OpenEntity]
+      # @return [void]
+      def reset(state)
+        return unless state
+
+        state.timer = 0
       end
 
       # @param _args [GTK::Args]

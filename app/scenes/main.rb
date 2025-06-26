@@ -15,6 +15,7 @@ module Scenes
         args.state.player.tick(args)
         Controllers::EnemyController.tick(args)
         args.state.redraw_text_area = true if args.state.player.took_damage || Controllers::EventLogController.logged_event_this_tick
+        $game.goto_game_over unless args.state.player.alive? # rubocop:disable Style/GlobalVars
       end
 
       # @param args (see Game#tick)

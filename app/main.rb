@@ -6,6 +6,7 @@ require_relative "dices/d20"
 
 require_relative "scenes/main"
 require_relative "scenes/title"
+require_relative "scenes/game_over"
 
 require_relative "controllers/enemy_controller"
 require_relative "controllers/map_controller"
@@ -31,7 +32,7 @@ class Game
   attr_reader :active_scene
 
   def initialize
-    goto_title
+    goto_title(nil)
   end
 
   # @param args [GTK::Args]
@@ -56,8 +57,15 @@ class Game
 
   # Changes the scene to the title scene
   # @return [void]
-  def goto_title
+  def goto_title(args)
+    Scenes::Title.reset(args&.state)
     @active_scene = Scenes::Title
+  end
+
+  # Changes the scene to the title scene
+  # @return [void]
+  def goto_game_over
+    @active_scene = Scenes::GameOver
   end
 
   # Changes the scene to the main (game) scene
